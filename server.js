@@ -1,13 +1,15 @@
+require("dotenv").config();
 const express = require("express");
 const session = require("express-session");
+const chalk = require("chalk");
 
 const app = express();
-const PORT = 3001;
+const PORT = process.env.PORT || 3001;
 
 // session middleware
 app.use(
   session({
-    secret: "mySecret",
+    secret: process.env.SESSION_SECRET,
     resave: false,
     saveUninitialized: true,
     cookie: { secure: false },
@@ -26,5 +28,5 @@ app.get("/", (req, res, next) => {
 });
 
 app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
+  console.log(chalk.blue.bgWhite(`Server running on port ${PORT}`));
 });
