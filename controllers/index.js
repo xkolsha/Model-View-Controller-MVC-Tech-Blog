@@ -4,10 +4,10 @@ const router = require("express").Router();
 const apiRoutes = require("./api");
 
 // Import home routes
-const homeRoutes = require("./home-routes.js");
+const homeRoutes = require("./homeRoutes.js");
 
 // Import dashboard routes
-const dashboardRoutes = require("./dashboard-routes.js");
+const dashboardRoutes = require("./dashboardRoutes.js");
 
 // Define API routes
 router.use("/api", apiRoutes);
