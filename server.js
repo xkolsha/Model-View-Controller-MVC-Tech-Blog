@@ -2,7 +2,7 @@ require("dotenv").config();
 const express = require("express");
 const session = require("express-session");
 const chalk = require("chalk");
-const routes = require("./controllers"); // Make sure the path is correct
+const routes = require("./controllers");
 
 const app = express();
 const PORT = process.env.PORT || 3001;
