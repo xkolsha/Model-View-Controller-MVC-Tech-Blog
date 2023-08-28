@@ -2,12 +2,8 @@ const router = require("express").Router();
 const { Post, User } = require("../models");
 const withAuth = require("../utils/auth");
 
-router.get("/dashboard", withAuth, (req, res) => {
-  res.render("dashboard");
-});
-
-// Route to display the dashboard page
-router.get("/", withAuth, async (req, res) => {
+// Route to display the dashboard page with all posts of the logged-in user
+router.get("/dashboard", withAuth, async (req, res) => {
   try {
     // Get all posts of the logged-in user
     const postData = await Post.findAll({

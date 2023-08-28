@@ -16,7 +16,7 @@ router.get("/dashboard", async (req, res) => {
   if (req.session.logged_in) {
     res.render("dashboard");
   } else {
-    res.render("signup");
+    res.render("login");
   }
 });
 
