@@ -3,7 +3,7 @@ const { User } = require("../models");
 
 // Render the home page
 router.get("/", async (req, res) => {
-  res.render("index", { pageTitle: "Home" });
+  res.render("home", { pageTitle: "Home" });
 });
 
 // Render the login page
@@ -30,6 +30,19 @@ router.get("/user", async (req, res) => {
     console.log("Error fetching users:", err);
     res.status(500).json(err);
   }
+});
+
+// Logout logic
+router.get("/logout", (req, res) => {
+  // Destroy the session and remove the req.session object
+  req.session.destroy((err) => {
+    if (err) {
+      res.status(500).json(err);
+    } else {
+      // Redirect to home page or login page after successfully logging out
+      res.redirect("/");
+    }
+  });
 });
 
 module.exports = router;

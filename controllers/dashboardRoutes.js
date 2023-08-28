@@ -2,6 +2,10 @@ const router = require("express").Router();
 const { Post, User } = require("../models");
 const withAuth = require("../utils/auth");
 
+router.get("/dashboard", withAuth, (req, res) => {
+  res.render("dashboard");
+});
+
 // Route to display the dashboard page
 router.get("/", withAuth, async (req, res) => {
   try {
