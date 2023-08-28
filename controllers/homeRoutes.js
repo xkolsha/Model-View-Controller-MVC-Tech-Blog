@@ -8,22 +8,25 @@ router.get("/", async (req, res) => {
 
 // Render the login page
 router.get("/login", (req, res) => {
-  res.render("login", { pageTitle: "Login" });
+  res.render("login", { pageTitle: "Login / Signup" });
 });
 
 // Fetch and render user data if not logged in
-router.get("/user", async (req, res) => {
+router.get("/dashboard", async (req, res) => {
   if (req.session.logged_in) {
-    res.redirect("/");
-    return;
+    res.render("dashboard");
+  } else {
+    res.render("signup");
   }
+});
 
+// Fetch and render all users (if needed)
+router.get("/all-users", async (req, res) => {
   try {
     const userData = await User.findAll({
       attributes: { exclude: ["password"] },
       order: [["username", "ASC"]],
     });
-
     const users = userData.map((user) => user.get({ plain: true }));
     res.render("user", { users });
   } catch (err) {
