@@ -5,9 +5,10 @@ const { Post } = require("../../models");
 router.post("/", async (req, res) => {
   try {
     console.log("Creating a new post.");
+    console.log("Session User ID:", req.session.user_id); // Log the session user ID to debug
     const newPost = await Post.create({
       ...req.body,
-      userId: req.session.user_id,
+      user_id: req.session.user_id, // Make sure this session variable is being set somewhere
     });
     console.log("Post created:", newPost);
     res.status(200).json(newPost);
