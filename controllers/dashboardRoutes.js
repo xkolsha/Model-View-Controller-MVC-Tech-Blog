@@ -7,6 +7,7 @@ router.get("/dashboard", withAuth, async (req, res) => {
   try {
     // Get all posts of the logged-in user
     const postData = await Post.findAll({
+      order: [["createdAt", "DESC"]],
       where: {
         user_id: req.session.user_id,
       },
