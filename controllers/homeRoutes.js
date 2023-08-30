@@ -19,7 +19,11 @@ router.get("/", async (req, res) => {
     });
     const posts = allPosts.map((post) => post.get({ plain: true }));
     // Render the home page with the fetched posts
-    res.render("home", { pageTitle: "Home", posts });
+    res.render("home", {
+      pageTitle: "Home",
+      posts,
+      loggedIn: req.session.logged_in,
+    });
   } catch (err) {
     console.log("Error fetching posts:", err);
     res.status(500).json(err);
@@ -52,7 +56,7 @@ router.get("/dashboard", async (req, res) => {
       });
       const posts = postData.map((post) => post.get({ plain: true }));
       // Render the dashboard with fetched posts and comments
-      res.render("dashboard", { posts });
+      res.render("dashboard", { posts, loggedIn: req.session.logged_in });
     } catch (err) {
       console.log("Error fetching dashboard data:", err);
       res.status(500).json(err);
