@@ -8,7 +8,7 @@ router.post("/", async (req, res) => {
     console.log("Session User ID:", req.session.user_id); // Log the session user ID to debug
     const newPost = await Post.create({
       ...req.body,
-      user_id: req.session.user_id, // Make sure this session variable is being set somewhere
+      user_id: req.session.user_id,
     });
     console.log("Post created:", newPost);
     res.status(200).json(newPost);

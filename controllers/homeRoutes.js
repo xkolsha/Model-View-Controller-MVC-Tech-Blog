@@ -3,21 +3,27 @@ const { User, Post, Comment } = require("../models");
 
 // Render the home page
 router.get("/", async (req, res) => {
-  const allPosts = await Post.findAll({
-    include: [
-      {
-        model: User,
-        attributes: ["username"],
-      },
-      {
-        model: Comment,
-      },
-    ],
-  });
-
-  const posts = allPosts.map((post) => post.get({ plain: true }));
-
-  res.render("home", { pageTitle: "Home", posts });
+  try {
+    // Fetch all posts sorted by latest first and include user and comment details
+    const allPosts = await Post.findAll({
+      order: [["createdAt", "DESC"]],
+      include: [
+        {
+          model: User,
+          attributes: ["username"],
+        },
+        {
+          model: Comment,
+        },
+      ],
+    });
+    const posts = allPosts.map((post) => post.get({ plain: true }));
+    // Render the home page with the fetched posts
+    res.render("home", { pageTitle: "Home", posts });
+  } catch (err) {
+    console.log("Error fetching posts:", err);
+    res.status(500).json(err);
+  }
 });
 
 // Render the login page
@@ -28,7 +34,29 @@ router.get("/login", (req, res) => {
 // Fetch and render user data if not logged in
 router.get("/dashboard", async (req, res) => {
   if (req.session.logged_in) {
-    res.render("dashboard");
+    try {
+      // Fetch posts and comments for the logged-in user
+      const postData = await Post.findAll({
+        where: {
+          user_id: req.session.user_id,
+        },
+        include: [
+          {
+            model: Comment,
+            include: {
+              model: User,
+              attributes: ["username"],
+            },
+          },
+        ],
+      });
+      const posts = postData.map((post) => post.get({ plain: true }));
+      // Render the dashboard with fetched posts and comments
+      res.render("dashboard", { posts });
+    } catch (err) {
+      console.log("Error fetching dashboard data:", err);
+      res.status(500).json(err);
+    }
   } else {
     res.render("login");
   }
@@ -37,21 +65,6 @@ router.get("/dashboard", async (req, res) => {
 router.get("/post", async (req, res) => {
   res.render("post", { pageTitle: "post" });
 });
-
-// // Fetch and render all users (if needed)
-// router.get("/all-users", async (req, res) => {
-//   try {
-//     const userData = await User.findAll({
-//       attributes: { exclude: ["password"] },
-//       order: [["username", "ASC"]],
-//     });
-//     const users = userData.map((user) => user.get({ plain: true }));
-//     res.render("user", { users });
-//   } catch (err) {
-//     console.log("Error fetching users:", err);
-//     res.status(500).json(err);
-//   }
-// });
 
 // Logout logic
 router.get("/logout", (req, res) => {
