@@ -32,6 +32,7 @@ User.init(
   {
     hooks: {
       async beforeCreate(newUserData) {
+        console.log("Hashing password");
         newUserData.password = await bcrypt.hash(newUserData.password, 10);
         return newUserData;
       },
@@ -43,6 +44,7 @@ User.init(
         return updatedUserData;
       },
     },
+
     sequelize,
     timestamps: false,
     freezeTableName: true,

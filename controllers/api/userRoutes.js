@@ -34,13 +34,16 @@ router.post("/", async (req, res) => {
 });
 
 // POST route to log in a user
+// /api/users/login
 router.post("/login", async (req, res) => {
   try {
     console.log("Logging in.");
-    const userData = await User.findOne({ where: { email: req.body.email } });
+    const userData = await User.findOne({
+      where: { username: req.body.username },
+    });
     console.log("User found:", userData);
     if (!userData) {
-      res.status(400).json({ message: "No user with that email address!" });
+      res.status(400).json({ message: "No user with that username!" });
       return;
     }
     const validPassword = await userData.checkPassword(req.body.password);

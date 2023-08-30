@@ -1,9 +1,23 @@
 const router = require("express").Router();
-const { User } = require("../models");
+const { User, Post, Comment } = require("../models");
 
 // Render the home page
 router.get("/", async (req, res) => {
-  res.render("home", { pageTitle: "Home" });
+  const allPosts = await Post.findAll({
+    include: [
+      {
+        model: User,
+        attributes: ["username"],
+      },
+      {
+        model: Comment,
+      },
+    ],
+  });
+
+  const posts = allPosts.map((post) => post.get({ plain: true }));
+
+  res.render("home", { pageTitle: "Home", posts });
 });
 
 // Render the login page
@@ -20,20 +34,24 @@ router.get("/dashboard", async (req, res) => {
   }
 });
 
-// Fetch and render all users (if needed)
-router.get("/all-users", async (req, res) => {
-  try {
-    const userData = await User.findAll({
-      attributes: { exclude: ["password"] },
-      order: [["username", "ASC"]],
-    });
-    const users = userData.map((user) => user.get({ plain: true }));
-    res.render("user", { users });
-  } catch (err) {
-    console.log("Error fetching users:", err);
-    res.status(500).json(err);
-  }
+router.get("/post", async (req, res) => {
+  res.render("post", { pageTitle: "post" });
 });
+
+// // Fetch and render all users (if needed)
+// router.get("/all-users", async (req, res) => {
+//   try {
+//     const userData = await User.findAll({
+//       attributes: { exclude: ["password"] },
+//       order: [["username", "ASC"]],
+//     });
+//     const users = userData.map((user) => user.get({ plain: true }));
+//     res.render("user", { users });
+//   } catch (err) {
+//     console.log("Error fetching users:", err);
+//     res.status(500).json(err);
+//   }
+// });
 
 // Logout logic
 router.get("/logout", (req, res) => {

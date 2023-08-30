@@ -6,6 +6,8 @@ const exphbs = require("express-handlebars"); // Import express-handlebars
 const path = require("path"); // Node.js built-in path module
 const routes = require("./controllers");
 
+const sequelize = require("./config/connection");
+
 const app = express();
 const PORT = process.env.PORT || 3001;
 
@@ -31,20 +33,26 @@ app.engine(
 app.set("view engine", "handlebars");
 app.set("views", path.join(__dirname, "views"));
 
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+app.use(express.static(path.join(__dirname, "public")));
+
 // Access the session as req.session
-app.get("/", (req, res, next) => {
-  if (req.session.views) {
-    req.session.views++;
-    res.render("home", { title: "Home Page", views: req.session.views }); // Render using Handlebars
-  } else {
-    req.session.views = 1;
-    res.render("home", { title: "Home Page", views: 1 }); // Render using Handlebars
-  }
-});
+// app.get("/", (req, res, next) => {
+//   if (req.session.views) {
+//     req.session.views++;
+//     res.render("home", { title: "Home Page", views: req.session.views }); // Render using Handlebars
+//   } else {
+//     req.session.views = 1;
+//     res.render("home", { title: "Home Page", views: 1 }); // Render using Handlebars
+//   }
+// });
 
 // Use the routes defined in controllers
 app.use(routes);
 
-app.listen(PORT, () => {
-  console.log(chalk.blue.bgWhite(`Server running on port ${PORT}`));
+sequelize.sync({ force: false }).then(() => {
+  app.listen(PORT, () =>
+    console.log(chalk.blue.bgWhite(`Server running on port ${PORT}`))
+  );
 });

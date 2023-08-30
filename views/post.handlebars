@@ -1,0 +1,16 @@
+<div class="container">
+  <h1>{{post.title}}</h1>
+  <p>{{post.content}}</p>
+
+  <h2>Comments</h2>
+  {{#each post.comments}}
+    <div class="comment">
+      <p>{{this.content}}</p>
+    </div>
+  {{/each}}
+
+  <form id="new-comment-form">
+    <textarea name="content" placeholder="Your comment"></textarea>
+    <button type="submit">Add Comment</button>
+  </form>
+</div>
