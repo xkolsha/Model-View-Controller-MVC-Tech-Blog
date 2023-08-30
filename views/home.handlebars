@@ -1,16 +1,12 @@
-<!-- Home Page Template -->
-<div class="container">
-  <h1>{{pageTitle}}</h1>
-  <p>Welcome to the Tech Blog Home Page!</p>
+<h1>Latest Posts</h1>
 
-  <!-- Section for Existing Blog Posts -->
-  <section id="blog-posts">
-    {{#each posts as |post|}}
-      <article>
-        <h2>{{post.title}}</h2>
-        <p>{{post.content}}</p>
-        <small>Posted by {{post.author}} on {{post.date}}</small>
-      </article>
-    {{/each}}
-  </section>
-</div>
+<section>
+  {{#each posts}}
+    <article>
+      <h2><a href="/posts/{{this.id}}">{{this.title}}</a></h2>
+      <p>{{this.content}}</p>
+      <small>Posted by: {{this.user.username}}</small>
+      <small>Comments: {{this.comments.length}}</small>
+    </article>
+  {{/each}}
+</section>
