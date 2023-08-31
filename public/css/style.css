@@ -11,3 +11,24 @@
   background-color: #dff0d8;
   color: #3c763d;
 }
+
+.auth-container {
+  text-align: center;
+}
+
+.auth-form-wrapper {
+  margin-bottom: 1.875rem;
+}
+
+.auth-form {
+  display: flex;
+  flex-direction: column;
+}
+
+.auth-input {
+  margin: 0.625rem 0;
+  padding: 0.9375rem;
+  font-size: 1em;
+  border: 0.0625rem solid #ccc;
+  border-radius: 0.25rem;
+}

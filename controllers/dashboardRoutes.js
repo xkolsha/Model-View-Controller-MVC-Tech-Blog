@@ -13,11 +13,11 @@ router.get("/dashboard", withAuth, async (req, res) => {
       },
       include: [
         {
+          model: User,
+          attributes: ["username"],
+        },
+        {
           model: Comment,
-          include: {
-            model: User,
-            attributes: ["username"],
-          },
         },
       ],
     });
@@ -25,10 +25,12 @@ router.get("/dashboard", withAuth, async (req, res) => {
     const posts = postData.map((post) => post.get({ plain: true }));
 
     res.render("dashboard", {
+      pageTitle: "Dashboard",
       posts,
       logged_in: req.session.logged_in,
     });
   } catch (err) {
+    console.log("Error fetching posts:", err);
     res.status(500).json(err);
   }
 });

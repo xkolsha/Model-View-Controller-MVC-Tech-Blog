@@ -1,24 +1,35 @@
-<div class="container">
-  <h1>Your Posts</h1>
+<h1 class="fs-1 fw-bold text-success mb-5">Your Posts</h1>
 
-  <form id="new-post-form">
-    <input type="text" name="title" placeholder="Title" />
-    <textarea name="content" placeholder="Content"></textarea>
-    <button type="submit">Add Post</button>
-  </form>
+<form id="new-post-form">
+  <input type="text" name="title" placeholder="Title" />
+  <textarea name="content" placeholder="Content"></textarea>
+  <button type="submit">Add Post</button>
+</form>
 
+<section>
   {{#each posts}}
-    <div class="post">
-      <h2><a href="/posts/{{this.id}}">{{this.title}}</a></h2>
-      <p>{{this.content}}</p>
-      <small>Comments: {{this.comments.length}}</small>
-      {{!-- <h3>Comments</h3>
-      {{#each this.comments}}
-        <div class="comment">
-          <p>{{this.comment_text}} - Posted by {{this.user.username}}</p>
+    <div class="accordion-item mb-3">
+      <h2 class="accordion-header">
+        <button
+          class="accordion-button green-acc-btn {{#unless @first}}collapsed{{/unless}}"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#panelsStayOpen-collapse{{@index}}"
+          aria-expanded="{{#if @first}}true{{else}}false{{/if}}"
+          aria-controls="panelsStayOpen-collapse{{@index}}">
+    <span class="d-flex align-items-center">
+            <strong class="me-2">{{this.title}}</strong>
+            <small class="badge rounded-pill bg-danger">
+              {{this.comments.length}}
+            </small>
+          </span>
+        </button>
+      </h2>
+      <div id="panelsStayOpen-collapse{{@index}}" class="accordion-collapse collapse {{#if @first}}show{{/if}}">
+        <div class="accordion-body bg-light-green">
+          <a href="/posts/{{this.id}}" class="no-underline text-dark">{{this.content}}</a>
         </div>
-      {{/each}} --}}
+      </div>
     </div>
   {{/each}}
-
-</div>
+</section>
