@@ -4,7 +4,7 @@
       <!-- Single Post -->
       <div class="card mb-4">
         <div class="card-header">
-          <h3 class="card-title">{{post.title}}</h3>
+          <h3 class="card-title text-success">{{post.title}}</h3>
           <small>Posted by: {{post.user.username}}</small>
         </div>
         <div class="card-body">
@@ -13,12 +13,12 @@
       </div>
 
       <!-- Comments -->
-      <h4>Comments</h4>
+
       {{#each post.comments}}
-        <div class="card mb-2">
+        <div class="card mb-2 bg-success-subtle">
           <div class="card-body">
-            <h5 class="card-title">{{this.user.username}} says:</h5>
-            <p class="card-text">{{this.comment_text}}</p>
+            <h5 class="card-title fs-6">{{this.user.username}} says:</h5>
+            <p class="card-text fs-6">{{this.comment_text}}</p>
           </div>
         </div>
       {{/each}}
@@ -26,17 +26,17 @@
       <!-- Add Comment -->
       <div class="card">
         <div class="card-body">
-          <h5 class="card-title">Add a Comment</h5>
+          <h5 class="card-title fs-6">Add a Comment</h5>
           <form id="add-comment-form">
             <div class="form-group">
               <textarea
-                class="form-control"
+                class="form-control fs-6"
                 id="comment_text"
                 rows="3"
                 placeholder="Your comment"
               ></textarea>
             </div>
-            <button type="submit" class="btn btn-primary">Submit</button>
+            <button type="submit" class="btn btn-success mt-3">Submit</button>
           </form>
         </div>
       </div>

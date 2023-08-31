@@ -2,10 +2,10 @@
 
 <section>
   {{#each posts}}
-    <div class="accordion-item mb-3">
-      <h2 class="accordion-header">
+    <div class="accordion-item mb-4">
+      <h2 class="accordion-header bg-light p-3">
         <button
-          class="accordion-button green-acc-btn {{#unless @first}}collapsed{{/unless}}"
+          class="accordion-button {{#unless @first}}collapsed{{/unless}}"
           type="button"
           data-bs-toggle="collapse"
           data-bs-target="#panelsStayOpen-collapse{{@index}}"
@@ -15,7 +15,7 @@
         >
           <!-- Title and Comment Count -->
           <span class="d-flex align-items-center">
-            <strong class="me-2">{{this.title}}</strong>
+            <h3 class="me-4">{{this.title}}</h3>
             <small class="badge rounded-pill bg-danger">
               {{this.comments.length}}
             </small>
@@ -23,7 +23,7 @@
         </button>
       </h2>
       <div id="panelsStayOpen-collapse{{@index}}" class="accordion-collapse collapse {{#if @first}}show{{/if}}">
-        <div class="accordion-body bg-light-green">
+        <div class="accordion-body bg-success-subtle p-3">
           <a href="/posts/{{this.id}}" class="no-underline text-dark">{{this.content}}</a>
         </div>
       </div>

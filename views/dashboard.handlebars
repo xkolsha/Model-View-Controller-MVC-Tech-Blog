@@ -11,7 +11,7 @@
     <div class="accordion-item mb-3">
       <h2 class="accordion-header">
         <button
-          class="accordion-button green-acc-btn {{#unless @first}}collapsed{{/unless}}"
+          class="accordion-button bg-light {{#unless @first}}collapsed{{/unless}}"
           type="button"
           data-bs-toggle="collapse"
           data-bs-target="#panelsStayOpen-collapse{{@index}}"
@@ -26,7 +26,7 @@
         </button>
       </h2>
       <div id="panelsStayOpen-collapse{{@index}}" class="accordion-collapse collapse {{#if @first}}show{{/if}}">
-        <div class="accordion-body bg-light-green">
+        <div class="accordion-body bg-success-subtle">
           <a href="/posts/{{this.id}}" class="no-underline text-dark">{{this.content}}</a>
         </div>
       </div>
