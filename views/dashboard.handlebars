@@ -1,24 +1,35 @@
 <h1 class="fs-1 fw-bold text-success mb-5">Your Posts</h1>
 
-<form id="new-post-form">
-  <input type="text" name="title" placeholder="Title" />
-  <textarea name="content" placeholder="Content"></textarea>
-  <button type="submit">Add Post</button>
+<!-- New Post Form -->
+<form id="new-post-form" class="bg-light p-4 rounded mb-5">
+  <div class="mb-3">
+    <label for="title" class="form-label">Title</label>
+    <input type="text" class="form-control" id="title" name="title" placeholder="Enter the post title" required>
+  </div>
+  <div class="mb-3">
+    <label for="content" class="form-label">Content</label>
+    <textarea class="form-control" id="content" name="content" rows="4" placeholder="Write your post content here" required></textarea>
+  </div>
+  <button type="submit" class="btn btn-success">Add Post</button>
 </form>
+
 
 <section>
   {{#each posts}}
-    <div class="accordion-item mb-3">
-      <h2 class="accordion-header">
+     <div class="accordion-item mb-4">
+      <h2 class="accordion-header bg-light p-3">
         <button
-          class="accordion-button bg-light {{#unless @first}}collapsed{{/unless}}"
+          class="accordion-button {{#unless @first}}collapsed{{/unless}}"
           type="button"
           data-bs-toggle="collapse"
           data-bs-target="#panelsStayOpen-collapse{{@index}}"
           aria-expanded="{{#if @first}}true{{else}}false{{/if}}"
-          aria-controls="panelsStayOpen-collapse{{@index}}">
-    <span class="d-flex align-items-center">
-            <strong class="me-2">{{this.title}}</strong>
+          aria-controls="panelsStayOpen-collapse{{@index}}"
+          
+        >
+          <!-- Title and Comment Count -->
+          <span class="d-flex align-items-center">
+            <h3 class="me-4">{{this.title}}</h3>
             <small class="badge rounded-pill bg-danger">
               {{this.comments.length}}
             </small>
@@ -26,7 +37,7 @@
         </button>
       </h2>
       <div id="panelsStayOpen-collapse{{@index}}" class="accordion-collapse collapse {{#if @first}}show{{/if}}">
-        <div class="accordion-body bg-success-subtle">
+        <div class="accordion-body bg-success-subtle p-3">
           <a href="/posts/{{this.id}}" class="no-underline text-dark">{{this.content}}</a>
         </div>
       </div>
