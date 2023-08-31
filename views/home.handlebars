@@ -1,12 +1,32 @@
-<h1>Latest Posts</h1>
+<h1 class="fs-1 fw-bold text-success mb-5">Latest Posts</h1>
 
 <section>
   {{#each posts}}
-    <article>
-      <h2><a href="/posts/{{this.id}}">{{this.title}}</a></h2>
-      <p>{{this.content}}</p>
-      <small>Posted by: {{this.user.username}}</small>
-      <small>Comments: {{this.comments.length}}</small>
-    </article>
+    <div class="accordion-item mb-3">
+      <h2 class="accordion-header">
+        <button
+          class="accordion-button green-acc-btn {{#unless @first}}collapsed{{/unless}}"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#panelsStayOpen-collapse{{@index}}"
+          aria-expanded="{{#if @first}}true{{else}}false{{/if}}"
+          aria-controls="panelsStayOpen-collapse{{@index}}"
+          
+        >
+          <!-- Title and Comment Count -->
+          <span class="d-flex align-items-center">
+            <strong class="me-2">{{this.title}}</strong>
+            <small class="badge rounded-pill bg-danger">
+              {{this.comments.length}}
+            </small>
+          </span>
+        </button>
+      </h2>
+      <div id="panelsStayOpen-collapse{{@index}}" class="accordion-collapse collapse {{#if @first}}show{{/if}}">
+        <div class="accordion-body bg-light-green">
+          <a href="/posts/{{this.id}}" class="no-underline text-dark">{{this.content}}</a>
+        </div>
+      </div>
+    </div>
   {{/each}}
 </section>

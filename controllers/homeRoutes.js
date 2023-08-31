@@ -83,4 +83,39 @@ router.get("/logout", (req, res) => {
   });
 });
 
+// Fetch and render a single post
+router.get("/posts/:id", async (req, res) => {
+  try {
+    const postData = await Post.findByPk(req.params.id, {
+      include: [
+        {
+          model: Comment,
+          include: {
+            model: User,
+            attributes: ["username"],
+          },
+        },
+        {
+          model: User,
+          attributes: ["username"],
+        },
+      ],
+    });
+
+    if (!postData) {
+      res.status(404).json({ message: "No post found with this ID" });
+      return;
+    }
+
+    const post = postData.get({ plain: true });
+
+    res.render("post", {
+      post,
+      loggedIn: req.session.logged_in,
+    });
+  } catch (err) {
+    console.log("Error fetching post:", err);
+    res.status(500).json(err);
+  }
+});
 module.exports = router;
