@@ -24,6 +24,7 @@
       </h2>
       <div id="panelsStayOpen-collapse{{@index}}" class="accordion-collapse collapse {{#if @first}}show{{/if}}">
         <div class="accordion-body bg-success-subtle p-3">
+          <h5 class="card-title fs-6 mb-2">posted by: {{this.user.username}}</h5>
           <a href="/posts/{{this.id}}" class="no-underline text-dark">{{this.content}}</a>
         </div>
       </div>
