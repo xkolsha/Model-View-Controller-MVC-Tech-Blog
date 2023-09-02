@@ -26,8 +26,8 @@ document.addEventListener("DOMContentLoaded", function () {
           },
           body: JSON.stringify({
             comment_text: commentText,
-            post_id: post_id, // Updated
-            user_id: user_id, // Updated
+            post_id: post_id,
+            user_id: user_id,
           }),
         });
 
