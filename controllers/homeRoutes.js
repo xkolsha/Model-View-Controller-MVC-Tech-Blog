@@ -1,5 +1,6 @@
 const router = require("express").Router();
 const { User, Post, Comment } = require("../models");
+const withAuth = require("../utils/auth");
 
 // Render the home page
 router.get("/", async (req, res) => {
@@ -35,37 +36,6 @@ router.get("/login", (req, res) => {
   res.render("login", { pageTitle: "Login / Signup" });
 });
 
-// Fetch and render user data if not logged in
-router.get("/dashboard", async (req, res) => {
-  if (req.session.logged_in) {
-    try {
-      // Fetch posts and comments for the logged-in user
-      const postData = await Post.findAll({
-        where: {
-          user_id: req.session.user_id,
-        },
-        include: [
-          {
-            model: Comment,
-            include: {
-              model: User,
-              attributes: ["username"],
-            },
-          },
-        ],
-      });
-      const posts = postData.map((post) => post.get({ plain: true }));
-      // Render the dashboard with fetched posts and comments
-      res.render("dashboard", { posts, loggedIn: req.session.logged_in });
-    } catch (err) {
-      console.log("Error fetching dashboard data:", err);
-      res.status(500).json(err);
-    }
-  } else {
-    res.render("login");
-  }
-});
-
 router.get("/post", async (req, res) => {
   res.render("post", { pageTitle: "post" });
 });
@@ -81,6 +51,43 @@ router.get("/logout", (req, res) => {
       res.redirect("/");
     }
   });
+});
+
+// Route to display the dashboard page with all posts of the logged-in user
+router.get("/dashboard", withAuth, async (req, res) => {
+  try {
+    // Get all posts of the logged-in user
+    const postData = await Post.findAll({
+      order: [["createdAt", "DESC"]],
+      where: {
+        user_id: req.session.user_id,
+      },
+      include: [
+        {
+          model: User,
+          attributes: ["username"],
+        },
+        {
+          model: Comment,
+          include: {
+            model: User,
+            attributes: ["username"],
+          },
+        },
+      ],
+    });
+
+    const posts = postData.map((post) => post.get({ plain: true }));
+
+    res.render("dashboard", {
+      pageTitle: "Dashboard",
+      posts,
+      loggedIn: req.session.logged_in,
+    });
+  } catch (err) {
+    console.log("Error fetching posts:", err);
+    res.status(500).json(err);
+  }
 });
 
 // Fetch and render a single post

@@ -1,5 +1,5 @@
 const router = require("express").Router();
-const { Post } = require("../../models");
+const { Post, User } = require("../../models");
 
 // POST route to create a new post
 router.post("/", async (req, res) => {
@@ -15,6 +15,22 @@ router.post("/", async (req, res) => {
   } catch (err) {
     console.log("Error while creating post:", err);
     res.status(400).json(err);
+  }
+});
+
+// GET route to fetch a single post by ID
+router.get("/:id", async (req, res) => {
+  try {
+    const post = await Post.findByPk(req.params.id, {
+      include: [{ model: User, attributes: ["username"] }],
+    });
+    if (post) {
+      res.json(post);
+    } else {
+      res.status(404).json({ message: "Post not found" });
+    }
+  } catch (err) {
+    res.status(500).json(err);
   }
 });
 

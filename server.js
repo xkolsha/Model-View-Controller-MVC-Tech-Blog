@@ -7,6 +7,7 @@ const path = require("path"); // Node.js built-in path module
 const routes = require("./controllers");
 
 const sequelize = require("./config/connection");
+const SequelizeStore = require("connect-session-sequelize")(session.Store);
 
 const app = express();
 const PORT = process.env.PORT || 3001;
@@ -17,7 +18,14 @@ app.use(
     secret: process.env.SESSION_SECRET,
     resave: false,
     saveUninitialized: true,
-    cookie: { secure: false },
+    cookie: {
+      maxAge: 8 * 60 * 60 * 1000,
+      secure: false,
+    },
+    saveUninitialized: true,
+    store: new SequelizeStore({
+      db: sequelize,
+    }),
   })
 );
 
