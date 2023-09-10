@@ -9,7 +9,10 @@
         </div>
         <div class="card-body">
           <p class="card-text">{{post.content}}</p>
+          {{#if isAuthor}}
           <button type="submit" class="btn btn-success mt-3 edit-button">Edit Post</button>
+          <button type="submit" id="delete-btn" class="btn btn-danger mt-3" data-id="{{post.id}}">Delete Post</button>
+          {{/if}}
         </div>
       </div>
 

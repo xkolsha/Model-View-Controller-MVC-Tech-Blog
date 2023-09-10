@@ -115,9 +115,11 @@ router.get("/posts/:id", async (req, res) => {
     }
 
     const post = postData.get({ plain: true });
+    const isAuthor = req.session.user_id === post.user_id;
 
     res.render("post", {
       post,
+      isAuthor,
       loggedIn: req.session.logged_in,
     });
   } catch (err) {
@@ -125,4 +127,5 @@ router.get("/posts/:id", async (req, res) => {
     res.status(500).json(err);
   }
 });
+
 module.exports = router;

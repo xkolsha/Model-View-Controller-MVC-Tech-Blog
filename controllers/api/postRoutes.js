@@ -1,5 +1,5 @@
 const router = require("express").Router();
-const { Post, User } = require("../../models");
+const { Post, User, Comment } = require("../../models");
 
 // POST route to create a new post
 router.post("/", async (req, res) => {
@@ -51,6 +51,19 @@ router.get("/", async (req, res) => {
 router.put("/:id", async (req, res) => {
   try {
     console.log(`Updating post with ID ${req.params.id}.`);
+
+    const originalPost = await Post.findByPk(req.params.id);
+
+    if (!originalPost) {
+      return res.status(404).json({ message: "Post not found" });
+    }
+
+    if (originalPost.user_id !== req.session.user_id) {
+      return res
+        .status(403)
+        .json({ message: "You are not authorized to edit this post" });
+    }
+
     const updatedPost = await Post.update(req.body, {
       where: {
         id: req.params.id,
@@ -68,12 +81,27 @@ router.put("/:id", async (req, res) => {
 router.delete("/:id", async (req, res) => {
   try {
     console.log(`Deleting post with ID ${req.params.id}.`);
+
+    await Comment.destroy({
+      where: {
+        post_id: req.params.id,
+      },
+    });
+
     const deletedPost = await Post.destroy({
       where: {
         id: req.params.id,
+        user_id: req.session.user_id,
       },
     });
-    console.log("Post deleted:", deletedPost);
+
+    if (deletedPost === 0) {
+      return res
+        .status(404)
+        .json({ message: "Post not found or unauthorized" });
+    }
+
+    console.log("Post and its comments deleted:", deletedPost);
     res.status(200).json(deletedPost);
   } catch (err) {
     console.log("Error while deleting post:", err);

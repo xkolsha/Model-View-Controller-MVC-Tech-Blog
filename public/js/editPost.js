@@ -66,3 +66,29 @@ document.addEventListener("DOMContentLoaded", (event) => {
   const postId = document.querySelector("#save-btn").getAttribute("data-id");
   populateForm(postId);
 });
+
+// Function for deleting post and its comments
+const handleDeletePost = async (event) => {
+  event.preventDefault();
+
+  const id = document.querySelector("#delete-btn").getAttribute("data-id");
+
+  const response = await fetch(`/api/posts/${id}`, {
+    method: "DELETE",
+    headers: { "Content-Type": "application/json" },
+  });
+
+  if (response.ok) {
+    console.log("Post and its comments deleted");
+    window.location.href = "/dashboard";
+  } else {
+    alert("Error deleting post");
+  }
+};
+
+const deleteBtn = document.querySelector("#delete-btn");
+if (deleteBtn) {
+  deleteBtn.addEventListener("click", handleDeletePost);
+} else {
+  console.warn("#delete-btn not found");
+}
