@@ -42,11 +42,15 @@ const signupFormHandler = async (event) => {
   }
 };
 
-// Event listeners
-document
-  .querySelector("#login-form")
-  .addEventListener("submit", loginFormHandler);
+document.addEventListener("DOMContentLoaded", function () {
+  const loginForm = document.querySelector("#login-form");
+  const signupForm = document.querySelector("#signup-form");
 
-document
-  .querySelector("#signup-form")
-  .addEventListener("submit", signupFormHandler);
+  if (loginForm) {
+    loginForm.addEventListener("submit", loginFormHandler);
+  }
+
+  if (signupForm) {
+    signupForm.addEventListener("submit", signupFormHandler);
+  }
+});

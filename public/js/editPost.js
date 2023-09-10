@@ -31,7 +31,9 @@ document.addEventListener("DOMContentLoaded", (event) => {
       });
 
       if (response.ok) {
-        document.location.replace("/dashboard");
+        document.querySelector("#post-title").innerText = title;
+        document.querySelector("#post-content").innerText = content;
+        window.location.href = window.location.href;
       } else {
         alert("Error updating post");
       }
@@ -39,7 +41,12 @@ document.addEventListener("DOMContentLoaded", (event) => {
   };
 
   // Attaching event listener to the "Commit Changes" button
-  document.querySelector("#save-btn").addEventListener("click", handleEditPost);
+  const saveBtn = document.querySelector("#save-btn");
+  if (saveBtn) {
+    saveBtn.addEventListener("click", handleEditPost);
+  } else {
+    console.warn("#save-btn not found");
+  }
 
   // Event listener to toggle edit form
   const editButton = document.querySelector(".edit-button");
